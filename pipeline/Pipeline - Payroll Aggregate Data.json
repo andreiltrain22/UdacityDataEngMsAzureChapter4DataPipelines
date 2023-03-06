@@ -1,0 +1,53 @@
+{
+	"name": "Pipeline - Payroll Aggregate Data",
+	"properties": {
+		"activities": [
+			{
+				"name": "Data Flow - Payroll Aggregate Data",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "df_payroll_aggregate_data",
+						"type": "DataFlowReference",
+						"parameters": {
+							"dataflow_param_fiscalyear": {
+								"value": "@pipeline().parameters.pl_param_fiscalyear",
+								"type": "Expression"
+							}
+						}
+					},
+					"staging": {
+						"linkedService": {
+							"referenceName": "adlsnycpayroll_linked",
+							"type": "LinkedServiceReference"
+						},
+						"folderPath": "adlsnycpayroll-andrei-l/dirstaging"
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
+			}
+		],
+		"parameters": {
+			"pl_param_fiscalyear": {
+				"type": "int",
+				"defaultValue": 2020
+			}
+		},
+		"annotations": [],
+		"lastPublishTime": "2023-03-06T01:21:37Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}
